@@ -1,0 +1,20 @@
+a:hover,
+#header .header-quote .quote-bold,
+#primary-nav li ul li a:hover,
+#primary-nav .nav li ul li a:hover,
+#column1 .category-box h3 a,
+.entry-author a,
+.entry a,
+#newsletter .subscribe a,
+.widget_tj_twitter li .content a,
+.comments-box a {
+	color: #369;
+}		
+
+#primary-nav { 
+	background-color: #369; 
+}
+#column2 .entry-cat {
+	background: #369;
+}			
+

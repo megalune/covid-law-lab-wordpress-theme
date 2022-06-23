@@ -1,0 +1,79 @@
+
+ul.tabs
+{
+
+	background: #fefefe;
+	overflow: hidden;
+
+
+  
+margin:5px 0px 0px 20px;
+    list-style-type: none;
+    text-align: center; /*set to left, center, or right to align the tabs as desired*/
+}
+        
+ul.tabs li
+{
+
+	background: none;
+	float: left;
+	display: inline;
+	font-size: 15px;
+	font-weight: bold;
+	color: #fff;
+	cursor: pointer;
+border-bottom: none;
+font-family: 'PT Sans', sans-serif, Arial;
+border-right: 1px solid #e0e0e0;
+}
+        
+
+ul.tabs li.noborder {
+border-right: 1px solid #ffffff;
+}
+
+ul.tabs li a
+{
+	color: #999;
+	display: block;
+	padding: 0 15px;
+	line-height: 30px;
+	font-family: 'PT Sans', sans-serif;
+	margin:auto;
+}
+        
+ul.tabs li a:visited
+{
+    color: #000;
+}
+        
+ul.tabs li a:hover
+{
+	color: #ffcc00;
+	text-decoration: none;
+}
+        
+ul.tabs li.selected a
+{
+color: #2E4E95;
+	text-decoration: none;
+}
+        
+        
+ul.tabs li.selected a:hover
+{
+    /*selected tab style */
+    text-decoration: none;
+}
+        
+div.tabcontent
+{
+    display: block;
+}
+
+div.tabcontents
+{
+    padding: 20px;
+    background-color:#FFFFFF;
+    border-radius: 10px;
+}
