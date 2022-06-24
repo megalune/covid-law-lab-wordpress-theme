@@ -37,7 +37,7 @@ function initMap() {}
   });
 </script>
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmfdhVdvTblpff4EOz2Kve9RIEPQNtifE&callback=initMap"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=***KEY***&callback=initMap"></script>
 <script src="/wp-content/themes/covid/map/leaflet/leaflet.js"></script>
 <link rel="stylesheet" href="/wp-content/themes/covid/map/leaflet/leaflet.css" type="text/css" media="screen">
 <script src="/wp-content/themes/covid/map/Google.js"></script>
