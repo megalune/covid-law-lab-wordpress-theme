@@ -1,6 +1,5 @@
 <?php get_header(); ?>
 <?php
-
 	function get_meta_values( $key = '' ) {
 		global $wpdb;    
 		$result = $wpdb->get_results( "SELECT pm.meta_value FROM wp_postmeta pm JOIN wp_posts p ON p.ID = pm.post_id WHERE pm.meta_key = '".$key."' AND p.post_status = 'publish' AND p.post_type = 'item' GROUP BY pm.meta_value" );
@@ -11,90 +10,68 @@
 
 
 
+	<?php
+		// set search variables to null if undefined
+		$category_name = isset($_GET["topic"]) ? $_GET["topic"] : '';
+		$search_tag = isset($_GET["search_tag"]) ? $_GET["search_tag"] : '';
+		$region = isset($_GET["region"]) ? $_GET["region"] : '';
+		$country = isset($_GET["country"]) ? $_GET["country"] : '';
+		$type = isset($_GET["type"]) ? $_GET["type"] : '';
+		$sorting = isset($_GET["sorting"]) ? $_GET["sorting"] : '';
+		if ($sorting == 'title') { $orderby = 'title'; $meta_key = ''; $order = 'ASC'; }
+		else if ($sorting == 'date_issued') { $orderby = 'meta_value_num'; $meta_key = 'date_issued'; $order = 'DESC'; }
+		else { $orderby = 'meta_value'; $meta_key = $sorting; $order = 'ASC'; }
+		$paged = get_query_var('paged') ? get_query_var('paged') : 1;
+	?>
+
+
+	<?php
+		# if search by country display analysis first
+		if($country != "") {
+			?><article class="search-item" style="margin: 3rem 0 4rem; padding: 2rem 2.5rem 1.5rem;">
+
+				<h2><?php echo $country; ?></h2>
+
+				<div class="row">
 				<?php
-				// set variables to null if undefined
-				$category_name = isset($_GET["topic"]) ? $_GET["topic"] : '';
-				$search_tag = isset($_GET["search_tag"]) ? $_GET["search_tag"] : '';
-				$region = isset($_GET["region"]) ? $_GET["region"] : '';
-				$country = isset($_GET["country"]) ? $_GET["country"] : '';
-				$type = isset($_GET["type"]) ? $_GET["type"] : '';
-				$sorting = isset($_GET["sorting"]) ? $_GET["sorting"] : '';
-				if ($sorting == 'title') { $orderby = 'title'; $meta_key = ''; $order = 'ASC'; }
-				else if ($sorting == 'date_issued') { $orderby = 'meta_value_num'; $meta_key = 'date_issued'; $order = 'DESC'; }
-				else { $orderby = 'meta_value'; $meta_key = $sorting; $order = 'ASC'; }
-				$paged = get_query_var('paged') ? get_query_var('paged') : 1;
-				?>
-				<!-- if search by country put analysis first -->
-				<?php
-					if($country != "") {
-						?><article class="search-item" style="margin: 3rem 0 4rem; padding: 2rem 2.5rem 1.5rem;">
+					$query = "SELECT iso2 FROM country_master WHERE name LIKE '%".$country."%' OR name_un LIKE '%".$country."%' LIMIT 1";
+					$countries = $wpdb->get_results($query, ARRAY_A);
+					if( !empty($countries) ){
+						echo "<!-- ISO2 = ".$countries[0]["iso2"]." -->";
+						$iso2 = $countries[0]["iso2"];
+						$who_data = file_get_contents("https://covidlawlab.org/wp-content/themes/covid/country-reports/get-who-data.php?iso2=".$iso2);
+						echo $who_data;
+					} else { echo "<!-- iso2 error -->"; }
 
-								<h2><?php echo $country; ?></h2>
-
-<div class="row">
-	<!-- <div class="one-half column">					 -->
-
-
-
-
-						<?php
-
-						$query = "SELECT iso2 FROM country_master WHERE name LIKE '%".$country."%' OR name_un LIKE '%".$country."%' LIMIT 1";
-    					$countries = $wpdb->get_results($query, ARRAY_A);
-	    				// print_r($countries);
-						if( !empty($countries) ){
-	    					echo "<!-- ISO2 = ".$countries[0]["iso2"]." -->";
-							$iso2 = $countries[0]["iso2"];
-							// include("country-reports/get-who-data.php?iso2=".$iso2);
-							$who_data = file_get_contents("https://covidlawlab.org/wp-content/themes/covid/country-reports/get-who-data.php?iso2=".$iso2);
-							echo $who_data;
-						} else { echo "<!-- iso2 error -->"; }
-
-						?>
-
-
-	<!-- </div>
-	<div class="one-half column"> -->
-
-						
-						<?php
-						// args
-						$args = array(
-							'posts_per_page' => 1,
-							'post_type'		=> 'countries',
-							'meta_query'	=> array(
-								'relation'		=> 'AND',
-								array(
-									'key'	 	=> 'country',
-									'value'	  	=> $country,
-									'compare' 	=> 'LIKE',
-								)
-							)
-						);
-						
-						// query
-						$the_query = new WP_Query( $args );
-						?>
-
-						<?php if( $the_query->have_posts() ): ?>
-							<?php while( $the_query->have_posts() ) : $the_query->the_post(); ?>
-								<?php get_template_part( 'country-display' ); ?>
-							<?php endwhile; ?>
-						<?php endif; ?>
-						<?php wp_reset_query();	 // Restore global post data stomped by the_post(). ?>
-
-
-
-	<!-- </div> -->
-</div>	
-
-
-
-						</article>
-				<?php
-					} // end country if
+				// args
+				$args = array(
+					'posts_per_page' => 1,
+					'post_type'		=> 'countries',
+					'meta_query'	=> array(
+						'relation'		=> 'AND',
+						array(
+							'key'	 	=> 'country',
+							'value'	  	=> $country,
+							'compare' 	=> 'LIKE',
+						)
+					)
+				);
+				
+				// query
+				$the_query = new WP_Query( $args );
 				?>
 
+				<?php if( $the_query->have_posts() ): ?>
+					<?php while( $the_query->have_posts() ) : $the_query->the_post(); ?>
+						<?php get_template_part( 'country-display' ); ?>
+					<?php endwhile; ?>
+				<?php endif; ?>
+				<?php wp_reset_query();	 // Restore global post data stomped by the_post(). ?>
+				</div>
+			</article>
+	<?php
+		} // end country if
+	?>
 
 
 
@@ -102,6 +79,7 @@
 
 
 
+	<!-- search form display with current selections -->
 	<div class="row">
 		<div class="one-third column">
 			<form method="get" action="/?">
@@ -182,9 +160,8 @@
 		</div>
 		<div class="two-thirds column">
 			<div id="content" class="archive">
-				<!-- if search by topic put toolkit first -->
 				<?php 
-					// args
+					// if search by topic put toolkit first
 					$args = array(
 						'posts_per_page' => 20,
 						'post_type'		=> 'item',

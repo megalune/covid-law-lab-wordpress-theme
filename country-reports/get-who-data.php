@@ -9,7 +9,6 @@ $age = 60 * 60 * 12; // in seconds == 12 hours
 if (file_exists($cache_file) && (filemtime($cache_file) > (time() - $age ))) {
    // Cache file is less than age limit. 
    // Don't bother refreshing, just use the file as-is.
-   // $file = file_get_contents($cache_file);
    $data_source = $cache_file;
 } else {
    // Our cache is out-of-date, so load the data from our remote server,
@@ -29,14 +28,9 @@ $i = 0;
 while(!feof($file)) {
    $row = fgetcsv($file);
    if($row[1] == $_GET["iso2"]){
-      // print_r($row);
       $cases = $row[5];
       $deaths = $row[7];
       $date = $row[0];
-      // echo $row[5];
-      // echo $row[7];
-      // echo "<p><strong>Cases:</strong> ".$cases."</p>";
-      // echo "<p><strong>Deaths:</strong> ".$deaths."</p>";
       $data[$i]['cases_n'] = $row[4];
       $data[$i]['cases_c'] = $row[5];
       $data[$i]['deaths_n'] = $row[6];
@@ -51,24 +45,14 @@ fclose($file);
 
 $last_seven = array_slice($data, $i-14);
 
-// echo "<!--";
-// print_r($last_seven);
-// echo "-->";
-
 $new_deaths = array();
 $new_cases = array();
 $dates = array();
 foreach ($last_seven as &$day) {
-    // array_push($new_deaths, number_format($day['deaths_n']));
     array_push($new_deaths, $day['deaths_n']);
-    // array_push($new_cases, number_format($day['cases_n']));
     array_push($new_cases, $day['cases_n']);
-    // array_push($dates, date_format(strtotime($day['date']),'F jS Y'));
     array_push($dates, $day['date']);
 }
-// print_r($new_deaths);
-// print_r($new_cases);
-// print_r($dates);
 ?>
 
 <div class="row text-center">
@@ -90,12 +74,6 @@ const data = {
   //   data: [ <?php echo implode(",", $new_deaths); ?> ],
   //   fill: false,
   //   borderColor: 'red',
-  //   tension: 0
-  // },{
-  //   label: 'New Cases',
-  //   data: [ <?php echo implode(",", $new_cases); ?> ],
-  //   fill: false,
-  //   borderColor: 'orange',
   //   tension: 0
   // }]
   datasets: [{

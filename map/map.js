@@ -63,7 +63,7 @@ applicationMAP.loadMapTiles = function () {
 applicationMAP.loadWorldGeoJson = function () {
 
     if (applicationMAP.geoJsonHolder == undefined) {
-        $.getJSON('/wp-content/themes/covid/map/simp5-2.json', function (geoJsondata) {
+        $.getJSON('/wp-content/themes/covid/map/world.json', function (geoJsondata) {
             if (geoJsondata != undefined) {
                 applicationMAP.geoJsonHolder = geoJsondata;
                 if (applicationMAP.map == undefined) {
