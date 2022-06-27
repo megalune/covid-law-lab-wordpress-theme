@@ -160,15 +160,12 @@ applicationMAP.getFeatureVal = function (id) {
     // console.log(data);
     if (data.count_total == 0) {
         returnVal = "#999999ff";
-    } /* this does the heatmap... else if (data.count_total < 15){
+    } else if (data.count_total < 15){
         returnVal = data.color+"77";
     } else if (data.count_total < 40){
         returnVal = data.color+"bb";
     } else {
         returnVal = data.color+"ff";
-    }*/
-    else {
-        returnVal = "#6794DCff";
     }
     if(returnVal == "undefinedff") {
         returnVal = "#999999ff";
