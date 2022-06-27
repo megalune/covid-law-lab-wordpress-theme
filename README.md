@@ -1,10 +1,11 @@
 # Global Health Tracking Wordpress Theme
 
-**Learn more about the project:** https://megalune.com/covid/
 **See it in action:** https://covidlawlab.org/
 
 ## Project
 A single repository was needed to gather and share legal documents from all over the world. Collaboration needed to be coordinated between several major institutions including the United Nations Development Programme (UNDP), the World Health Organization (WHO), the Joint United Nations Programme on HIV/AIDS (UNAIDS) and the O’Neill Institute for National and Global Health Law at Georgetown University.
+
+**Learn more about the project:** https://megalune.com/covid/
 
 ## Files
 - **index.php** - displays world map; creates search filters based on wordpress categories and custom fields
